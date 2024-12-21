@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template_string, jsonify
 import random
 import string
 
@@ -7,11 +7,19 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        length = int(request.form['length'])
-        use_uppercase = 'uppercase' in request.form
-        use_lowercase = 'lowercase' in request.form
-        use_digits = 'digits' in request.form
-        use_special = 'special' in request.form
+        if request.is_json:
+            data = request.get_json()
+            length = int(data.get('length', 0))
+            use_uppercase = data.get('uppercase', False)
+            use_lowercase = data.get('lowercase', False)
+            use_digits = data.get('digits', False)
+            use_special = data.get('special', False)
+        else:
+            length = int(request.form['length'])
+            use_uppercase = 'uppercase' in request.form
+            use_lowercase = 'lowercase' in request.form
+            use_digits = 'digits' in request.form
+            use_special = 'special' in request.form
 
         characters = ''
         if use_uppercase:
@@ -23,11 +31,18 @@ def index():
         if use_special:
             characters += string.punctuation
 
+        if not length:
+            return "Please enter a password length."
+
         if not characters:
             return "Please select at least one character set."
 
         password = ''.join(random.choice(characters) for _ in range(length))
-        return render_template_string(template, password=password)
+
+        if request.is_json:
+            return jsonify(password=password)
+        else:
+            return render_template_string(template, password=password)
 
     return render_template_string(template)
 
