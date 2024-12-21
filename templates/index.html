@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Password Generator</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mt-5">Password Generator</h1>
+      <form method="post" class="mt-3">
+        <div class="form-group">
+          <label for="length">Password Length:</label>
+          <input type="number" class="form-control" id="length" name="length" min="1" required>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="uppercase" name="uppercase">
+          <label class="form-check-label" for="uppercase">Include Uppercase Letters</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="lowercase" name="lowercase">
+          <label class="form-check-label" for="lowercase">Include Lowercase Letters</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="digits" name="digits">
+          <label class="form-check-label" for="digits">Include Digits</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="special" name="special">
+          <label class="form-check-label" for="special">Include Special Characters</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Generate Password</button>
+      </form>
+      {% if password %}
+      <div class="alert alert-success mt-3">
+        <h4 class="alert-heading">Your Generated Password:</h4>
+        <p>{{ password }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
